@@ -2,6 +2,14 @@
 
 JDBC-compatible Clojure library. Keep your database migrations in a single SQL file and automatically apply them when your app starts up. Suitable for small apps when you need to make things run. There is no automated way to roll back a migration. "I'm on a rollercoaster that only goes up, my friend."
 
+## Installation
+
+Via Clojars:
+
+``` clojure
+[naive-migrations "0.1.0"]
+```
+
 ## Usage
 
 Let’s assume, you have a following `migrations.sql` file:
