@@ -4,9 +4,6 @@
             [naive-migrations.core :refer :all]
             [clojure.java.jdbc :as jdbc]))
 
-(defquery create-test-db! "sql/create_test_db.sql")
-(defquery drop-test-db! "sql/drop_test_db.sql")
-
 (def management-conn
   {:subprotocol "mysql"
    :subname "//localhost:3306/"
@@ -19,12 +16,15 @@
    :user "root"
    :password ""})
 
-(def migrations (load-migrations "sql/test_migrations.sql"))
+(defquery create-test-db! "sql/create_test_db.sql" {:connection management-conn})
+(defquery drop-test-db! "sql/drop_test_db.sql" {:connection management-conn})
+
+(defonce migrations (load-migrations "sql/test_migrations.sql"))
 
 (defn fixtures [f]
-  (create-test-db! management-conn)
+  (create-test-db! management-conn {})
   (f)
-  (drop-test-db! management-conn))
+  (drop-test-db! management-conn {}))
 
 (use-fixtures :once fixtures)
 

@@ -6,7 +6,7 @@
 (defquery record! "sql/record_migration.sql")
 (defquery select-applied "sql/select_applied_migrations.sql")
 
-(def #^{:macro true} load-migrations #'defqueries)
+(def load-migrations defqueries)
 
 (defn get-name
   [q]
@@ -17,15 +17,15 @@
   [db migration]
   "Applies a migration to the database"
   (sql/with-db-transaction [conn db]
-    (migration conn)
-    (record! conn (get-name migration))))
+    (migration {} {:connection conn})
+    (record! {:name (get-name migration)} {:connection conn})))
 
 (defn apply-all
   [db migrations]
   "Applies each migration from a provided list excluding already applied ones.
    Creates the `migrations` table if needed"
-  (init! db)
-  (let [applied-names (set (map :name (select-applied db)))
+  (init! {} {:connection db})
+  (let [applied-names (set (map :name (select-applied {} {:connection db})))
         pending (filter #(not (contains? applied-names (get-name %))) migrations)]
     (doseq [m pending]
       (apply-one db m))))
