@@ -1,4 +1,4 @@
-(defproject naive-migrations "0.1.1-SNAPSHOT"
+(defproject naive-migrations "0.1.1"
   :description "Dead simple MySQL migrations assumed to always succeed."
   :url "http://github.com/temochka/naive-migrations"
   :license {:name "Eclipse Public License"
